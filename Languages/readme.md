@@ -4,28 +4,28 @@ How To with script executed in /Languages Folder
 
 To generate Language environnement from script executed in /Languages :
 
-<?php
+	<?php
 
-	SYSLangCompilator::build_environnement("../", "fr-FR:Français");
+		SYSLangCompilator::build_environnement("../", "fr-FR:Français");
 
-?>
+	?>
 
 
 To add new languages
 
-<?php
+	<?php
 
-	$lng = new SYSLangCompilator("../");
-	$lng->add_languages("en-EN:English");
+		$lng = new SYSLangCompilator("../");
+		$lng->add_languages("en-EN:English");
 
-?>
+	?>
 
 
 To Append referent package changes to others packages :
 
-<?php
+	<?php
 
-	$lng = new SYSLangCompilator("../");
-	$lng->compile();
+		$lng = new SYSLangCompilator("../");
+		$lng->compile();
 
-?>
+	?>
