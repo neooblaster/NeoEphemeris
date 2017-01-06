@@ -1,0 +1,1 @@
+This folder is made to received all template files like HTML, JSON, SQL (etc)

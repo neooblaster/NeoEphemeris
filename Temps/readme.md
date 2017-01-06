@@ -1,0 +1,1 @@
+This folder is made to received all temporary files for process
