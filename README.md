@@ -1,6 +1,39 @@
 # NeoEphemeris
 NeoEphemeris is a Web Interface Ephemeris for Web browsers. It's mainly built for RaspberryPI with embeded screen.
 
+Currently, there is no application to show you as demonstration, but i will try to deploy one commit per day.
+
+# To Do List
+
+* Finished main README.md
+* Deploy Git repository for Template
+* Deploy Git repository for SYSLang & SYSLangCompilator
+* Make & Deploy Manual for Template in md format
+* Make & Deploy Manual for SYSLang & SYSLangCompilator in md format
+* Make & Deploy Manual for xhrQuery in md format
+* Make & Deploy Manual for SSEOverhaul in md format
+
+# Requirements
+
+## 1. Get a RaspberryPI Model
+
+## 2. Get the Raspbian OS (Debian for Raspberry PI)
+
+## 3. How To Install Raspbian
+
+## 4. Basis Configuration
+
+### 4.1. Set Hosname
+
+### 4.2. Set Network config
+
+### 4.3. Change Dedicated Memory
+
+### 4.4. Change Keyboard Configuration
+
+### 4.5. Set Boot Mode As Command Line
+
+### 4.63 Update Raspbian
 
 # How To Install NeoEphemeris
 
@@ -68,3 +101,29 @@ sudo apt-get install php5-fpm php5-json php5-memcache php5-memcached php5-mysql 
 
 
 # How To Contribute 
+
+## 1. Powered By 
+
+### 1.1. Template Engine developted by myself based from PHPLIB HowTo
+
+* Sources : http://phpcodeur.net/articles/php/templates#h-variables
+* Repository : Comming Soon
+* Manual : Comming Soon
+
+### 1.2. Language Engine developted by myself to complet Template Engine but fully standalone
+
+* Sources : None
+* Repository : Comming Soon
+* Manual : Comming Soon
+
+### 1.3. AJAX Engine developted by myself to simplify "XMLHttpRequest" implementation
+
+* Sources : http://www.w3schools.com/js/js_ajax_http.asp
+* Repository : https://github.com/neooblaster/xhrQuery
+* Manual : Comming Soon
+
+### 1.4. Server-Sent-Event Engine developted by myself to simplify "EventSource" implementation
+
+* Sources : http://www.w3schools.com/html/html5_serversentevents.asp
+* Repository : https://github.com/neooblaster/SSEOverhaul
+* Manual : Comming Soon
