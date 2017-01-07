@@ -46,7 +46,14 @@
 /** > Ouverture des SESSIONS Globales **/
 /** > Chargement des Classes **/
 /** > Chargement des Configs **/
+
 /** > Chargement des Fonctions **/
+	require_once __ROOT__."/Processors/Functions/loadCSS.php";
+	require_once __ROOT__."/Processors/Functions/loadLESS.php";
+	require_once __ROOT__."/Processors/Functions/loadScriptsJS.php";
+	require_once __ROOT__."/Processors/Functions/sortScandir.php";
+
+
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** ---																																					--- **
@@ -62,15 +69,31 @@
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **/
 /** > Déclaration des variables **/
-	$moteur;		// Template	:: Instance du moteur Template
+	$CSS;			// ARRAY		:: Liste des fichiers CSS à auto-inclure
 	$lang;		// SYSLang	:: Instance du moteur de lang SYSLang
+	$LESS;		// ARRAY		:: Liste des fichiers LESS à auto-inclure
+	$moteur;		// Template	:: Instance du moteur Template
+	$SCRIPTSJS; // ARRAY		:: Liste des fichiers JavaScript à auto-inclure
+	$vars;		// ARRAY		:: Jeu de donnée à envoyer au moteur
+
 
 /** > Initialisation des variables **/
-	// Création du moteur
 	$moteur = new Template();
-	//$lang = new 
+	$CSS = Array();
+	$LESS = Array();
+	$SCRIPTSJS = Array();
+
 
 /** > Déclaration et Intialisation des variables pour le moteur (référence) **/
+	$vars = Array(
+		// @Block
+		"CSS" => &$CSS,
+		"LESS" => &$LESS,
+		"SCRIPTSJS" => &$SCRIPTSJS
+	);
+
+
+
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** ---																																					--- **
@@ -78,6 +101,13 @@
 /** ---																																					--- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **/
+	/** Chargement des Commons **/
+	$CSS = array_merge($CSS, loadCSS(false, "CSS/Common", "CSS/Index"));
+	$LESS = array_merge($LESS, loadLESS(false, "LESS/Common", "LESS/Index"));
+	$SCRIPTSJS = array_merge($SCRIPTSJS, loadScriptsJS(false, "Scripts/Common", "Scripts/Index"));
+
+
+
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** ---																																					--- **
@@ -97,6 +127,7 @@
 	$moteur->set_output_name("index.html");
 
 /** > Envoie des données **/
+	$moteur->set_vars($vars);
 
 /** > Execution du moteur **/
 	$moteur->render()->display();
