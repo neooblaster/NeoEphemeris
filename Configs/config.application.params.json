@@ -33,4 +33,15 @@
 /** ----------------------------------------------------------------------------------------------------------------------- **/
 /** ----------------------------------------------------------------------------------------------------------------------- **/
 {
+	/** Adresses des différentes sources **/
+	"SOURCES": {
+		/** Sunrise / sunset API **/
+		"SUN": {
+			"URL": "http://api.sunrise-sunset.org/json",
+			"PARAM": "lat;lng;[date];[callback];[formatted]"
+		}
+	},
+	
+	/** Timezone du serveur -- http://php.net/manual/en/timezones.php --**/
+	"TIMEZONE": "Europe/Paris"
 }

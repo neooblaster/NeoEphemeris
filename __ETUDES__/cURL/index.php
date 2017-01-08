@@ -28,6 +28,8 @@
 			"status":"OK"
 		}
 		
+		{"results":{"sunrise":"8:08:31 AM","sunset":"4:40:02 PM","solar_noon":"12:24:17 PM","day_length":"08:31:31","civil_twilight_begin":"7:32:25 AM","civil_twilight_end":"5:16:09 PM","nautical_twilight_begin":"6:52:47 AM","nautical_twilight_end":"5:55:46 PM","astronomical_twilight_begin":"6:14:52 AM","astronomical_twilight_end":"6:33:42 PM"},"status":"OK"}
+		
 		
 	**/
 
@@ -46,3 +48,22 @@
 	curl_close($ch);
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

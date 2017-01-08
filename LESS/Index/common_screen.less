@@ -1,0 +1,277 @@
+//#!/compile = true
+/** -------------------------------------------------------------------------------------------------------------------- ** 
+/** -------------------------------------------------------------------------------------------------------------------- ** 
+/** ---																																					--- **
+/** --- 											-----------------------------------------------											--- **
+/** ---															{ common_screen.less }															--- **
+/** --- 											-----------------------------------------------											--- **
+/** ---																																					--- **
+/** ---		TAB SIZE	: 3																															--- **
+/** ---																																					--- **
+/** ---		MEDIA 	: SCREEN																														--- **
+/** ---																																					--- **
+/** ---		AUTEUR 	: Nicolas DUPRE																											--- **
+/** ---																																					--- **
+/** ---		RELEASE	: 07.01.2017																												--- **
+/** ---																																					--- **
+/** ---																																					--- **
+/** ---																																					--- **
+/** ---																																					--- **
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** -------------------------------------------------------------------------------------------------------------------- **/
+
+/** --------------------------------------- **/
+/** ---   #1. Sa propre configuration   --- **/
+/** --------------------------------------- **/
+/** ---------------------------------------- **/
+/** ---   #2. Configuration des childs   --- **/
+/** ---------------------------------------- **/
+/** ------------------------------------------ **/
+/** ---   #3. Extension de configuration   --- **/
+/** ------------------------------------------ **/
+
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** ---																																					--- **
+/** ---															Déclaration des variables														--- **
+/** ---																																					--- **
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** -------------------------------------------------------------------------------------------------------------------- **/
+
+
+
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** ---																																					--- **
+/** ---														Configuration de l'interface														--- **
+/** ---																																					--- **
+/** -------------------------------------------------------------------------------------------------------------------- **
+/** -------------------------------------------------------------------------------------------------------------------- **/
+body {
+	background: pink;
+}
+
+
+@clock_size: 400px;
+
+/** Cadran Ephemeris Version_0.1**/
+.ephemeris {
+	position: relative;
+	width: @clock_size;
+	height: @clock_size;
+	overflow: hidden;
+	
+	.clock {
+		position: relative;
+		width: @clock_size;
+		height: @clock_size;
+		
+		overflow: hidden;
+		
+		background: #01020b;
+		border-radius: 50%;
+		
+		transform: rotate(0deg); // Current Time
+		transition: transform 1s;
+		
+		.rings {
+			/*
+			24h = 86400
+			0° = 00h00
+			360° 24h00
+			Astronomical start 	= 05h58'36" soit 21516" soit  89.6500°
+			Nautical start 		= 06h29'55" soit 23395" soit  97.4790°
+			Civil Start 			= 07h02'03" soit 25323" soit 105.5125°
+			Sunrise start 			= 08h08'52" soit 29332" soit 122.0000°
+			
+			sunset end 				= 16h38'51" soit 59931" soit 249,7125°
+			Civil End 				= 17h45'37" soit 63937" soit 266.4041°
+			Nautical end 			= 18h17'46" soit 65866" soit 274.4416°
+			Astronomical End 		= 18h49'05" soit 67745" soit 282.2708°
+			*/
+			.start_ {
+				&astronomical,
+				&nautical,
+				&civil,
+				&sunrise {
+					width: @clock_size;
+					height: @clock_size;
+					border-radius: 50%;
+					position: absolute;
+					transition: transform 0.5s;
+				}
+			}
+			.start_astronomical {
+				// Position = Astronomical Start; Color = DAY (Bleu)
+				// Degrée: 0° = 00h00 ; 90° = 06h00 ; 180° = 12h0 ; 270° = 18h00
+				// Calcul : astronomical_start_value
+				background: #8291c7;
+				clip: rect(@clock_size/3, @clock_size/2, @clock_size, 0);
+				
+				.start_nautical {
+					// Position = Sunrise; Color = Astronomical Color ()
+					// Degrée: 0° = 0' ; 45° = 3h00' ; 90° = 06h00
+					// Calcul : sunrise_start_vale - astronomical_start_value
+					background: #101149;
+					clip: rect(0, @clock_size, @clock_size, @clock_size/2);
+					transform: rotate(0deg); // 32.35 = Sunrise start - AstroStart
+					
+					.start_civil {
+						// Position = Nautical, Color = Sunrise
+						background: #ff7f5b;
+						clip: rect(0, @clock_size/2, @clock_size, 0);
+						transform: rotate(0deg); // -24.521 = -1 * deg ; Sunrise Start - NauticaStart
+						
+						.start_sunrise {
+							background: #ed4618;
+							clip: rect(0, @clock_size, @clock_size, @clock_size/2);
+							//transform: rotate(8.03350deg); // Civil - Nautical
+						}
+					}
+				}
+			}
+			
+			.end_ {
+				&astronomical,
+				&nautical,
+				&civil,
+				&sunset {
+					width: @clock_size;
+					height: @clock_size;
+					border-radius: 50%;
+					position: absolute;
+					transition: transform 0.5s;
+				}
+			}
+			.end_astronomical {
+				// Position = Astronomical; Color = DAY (Bleu)
+				// Degrée: 0° = 00h00 ; 90° = 06h00 ; 180° = 12h0 ; 270° = 18h00
+				// Calcul : -1 * (360 - astronomical_end_value)
+				background: #8291c7;
+				clip: rect(@clock_size/2, @clock_size, @clock_size, @clock_size/2);
+				transform: rotate(0deg); // -77.7292 = -1 * (360 - astro_val)
+				
+				.end_nautical {
+					// Position = Sunrise; Color = Astronomical Color
+					// Degrée: 0° = 0' ; 45° = 3h00' ; 90° = 06h00
+					background: #101149;
+					clip: rect(0, @clock_size/2, @clock_size, 0);
+					//transform: rotate(-32.5583deg); // Astro end - Sunset end // -1 * ()
+					
+					.end_civil {
+						// Position = Nautical, Color = Sunrise
+						background: #ff7f5b;
+						clip: rect(0, @clock_size, @clock_size, @clock_size/2);
+						//transform: rotate(24.7291deg); // NauticaEnd - Sunset End
+						
+						.end_sunset {
+							background: #ed4618;
+							clip: rect(0, @clock_size/2, @clock_size, 0);
+							//transform: rotate(-8.0375deg);  // -1 * (Natical - Civil)
+						}
+					}
+				}
+			}
+			
+			.dial {
+				position: absolute;
+				//background: red;
+				width: @clock_size;
+				height: @clock_size;
+				//transform: rotate(180deg);
+				color: white;
+				//font-weight: bold;
+				font-family: Calibri;
+				
+				span {
+					position: absolute;
+					left: 50%;
+					margin-left: -15px;
+					display: inline-block;
+					padding-top: 0;
+					height: calc(~"100%");
+					width: 30px;
+					//background: green;
+					text-align: center;
+					transform-origin: center center;
+					
+					/** 00 **/&:nth-child(1) {transform: rotate(0deg);}
+					/** 02 **/&:nth-child(2) {transform: rotate(30deg);}
+					/** 04 **/&:nth-child(3) {transform: rotate(60deg);}
+					/** 06 **/&:nth-child(4) {transform: rotate(90deg);}
+					/** 08 **/&:nth-child(5) {transform: rotate(120deg);}
+					/** 10 **/&:nth-child(6) {transform: rotate(150deg);}
+					/** 12 **/&:nth-child(7) {transform: rotate(180deg);}
+					/** 02 **/&:nth-child(8) {transform: rotate(210deg);}
+					/** 04 **/&:nth-child(9) {transform: rotate(240deg);}
+					/** 06 **/&:nth-child(10) {transform: rotate(270deg);}
+					/** 08 **/&:nth-child(11) {transform: rotate(300deg);}
+					/** 10 **/&:nth-child(12) {transform: rotate(330deg);}
+				}
+				//494d55
+			}
+			
+			/** Extension de configuration **/
+			&.uninitialized {
+				.start_astronomical, .end_astronomical {
+					display: none;
+				}
+			}
+		}
+	}
+	
+	.cursor {
+		// Version 1
+		position: absolute;
+		//border-top: 20px solid red; //8291c7
+		border-bottom: 10px solid #ff7f5b; //8291c7
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		width: 0;
+		height: 0;
+		left: 50%;
+		margin-left: -5px;
+		margin-top: -0;
+		top: 18px;
+		//z-index: 10;
+		
+		&::after {
+			content: "";
+			position: absolute;
+			width: 2px;
+			height: @clock_size / 2 / (2 * 1.5);
+			top: 4px;
+			left: -1px;
+			background: #ff7f5b;
+		}
+		
+		//position: absolute;
+		//width: 20px;
+		//height: 100px;
+		//top: 0;
+		//left: 50%;
+		//margin-left: -11px;
+		//border-width: 0 1px 0;
+		//border-style: solid;
+		//border-color: #01020b;
+		
+		&.day {
+			border-color: #01020b;
+		}
+		&.night {
+			border-color: #8291c7
+		}
+	}
+		
+	.inset {//display: none;
+		position: absolute;
+		border: 4px solid black;
+		left: calc(~"50% - 2px - " ((@clock_size / 1.5) / 2));
+		top: calc(~"50% - 2px - " ((@clock_size / 1.5) / 2));
+		background: #272a2e;
+		width: (@clock_size / 1.5);
+		height: (@clock_size / 1.5);
+		border-radius: 50%;
+		color: white;
+	}
+}
