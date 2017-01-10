@@ -37,6 +37,23 @@
 /** ---																																					--- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **/
+/** Module Ephemeris **/
+	// Couleurs :
+	@day_color: #8291c7;
+	@night_color: #01020b;
+	@astronomical_color: #101149;
+	@nautical_color: #10129e; //#ed4618;
+	@civil_color: #ff7f5b; //#ff7f5b;
+	@cursor_color: #01020b;
+	@cursor_day_color: #01020b;
+	@cursor_night_color: #8291c7;
+	@cursor_twilight_color: red;
+
+	// Dimensionnement :
+	@clock_size: 400px;
+
+	// Autres
+	@transition_transform_delay_01: 0.9s;
 
 
 
@@ -52,8 +69,6 @@ body {
 }
 
 
-@clock_size: 400px;
-
 /** Cadran Ephemeris Version_0.1**/
 .ephemeris {
 	position: relative;
@@ -61,6 +76,7 @@ body {
 	height: @clock_size;
 	overflow: hidden;
 	
+	/** Ensemble composant l'horloge et ses paramètre mobile (attaché) **/
 	.clock {
 		position: relative;
 		width: @clock_size;
@@ -68,11 +84,11 @@ body {
 		
 		overflow: hidden;
 		
-		background: #01020b;
+		background: @night_color;
 		border-radius: 50%;
 		
 		transform: rotate(0deg); // Current Time
-		transition: transform 1s;
+		transition: transform @transition_transform_delay_01;
 		
 		.rings {
 			/*
@@ -89,83 +105,73 @@ body {
 			Nautical end 			= 18h17'46" soit 65866" soit 274.4416°
 			Astronomical End 		= 18h49'05" soit 67745" soit 282.2708°
 			*/
-			.start_ {
+			/* .end_sunrise & .start_sunset not exist */
+			.start_, .end_ { 
 				&astronomical,
 				&nautical,
 				&civil,
-				&sunrise {
+				&sunrise,
+				&sunset {
 					width: @clock_size;
 					height: @clock_size;
 					border-radius: 50%;
 					position: absolute;
-					transition: transform 0.5s;
+					transition: transform @transition_transform_delay_01;
 				}
 			}
+			
 			.start_astronomical {
 				// Position = Astronomical Start; Color = DAY (Bleu)
 				// Degrée: 0° = 00h00 ; 90° = 06h00 ; 180° = 12h0 ; 270° = 18h00
 				// Calcul : astronomical_start_value
-				background: #8291c7;
+				background: @day_color;
 				clip: rect(@clock_size/3, @clock_size/2, @clock_size, 0);
 				
 				.start_nautical {
 					// Position = Sunrise; Color = Astronomical Color ()
 					// Degrée: 0° = 0' ; 45° = 3h00' ; 90° = 06h00
 					// Calcul : sunrise_start_vale - astronomical_start_value
-					background: #101149;
+					background: @astronomical_color;
 					clip: rect(0, @clock_size, @clock_size, @clock_size/2);
 					transform: rotate(0deg); // 32.35 = Sunrise start - AstroStart
 					
 					.start_civil {
 						// Position = Nautical, Color = Sunrise
-						background: #ff7f5b;
+						background: @civil_color;
 						clip: rect(0, @clock_size/2, @clock_size, 0);
 						transform: rotate(0deg); // -24.521 = -1 * deg ; Sunrise Start - NauticaStart
 						
 						.start_sunrise {
-							background: #ed4618;
+							background: @nautical_color;
 							clip: rect(0, @clock_size, @clock_size, @clock_size/2);
 							//transform: rotate(8.03350deg); // Civil - Nautical
 						}
 					}
 				}
 			}
-			
-			.end_ {
-				&astronomical,
-				&nautical,
-				&civil,
-				&sunset {
-					width: @clock_size;
-					height: @clock_size;
-					border-radius: 50%;
-					position: absolute;
-					transition: transform 0.5s;
-				}
-			}
 			.end_astronomical {
 				// Position = Astronomical; Color = DAY (Bleu)
 				// Degrée: 0° = 00h00 ; 90° = 06h00 ; 180° = 12h0 ; 270° = 18h00
 				// Calcul : -1 * (360 - astronomical_end_value)
-				background: #8291c7;
+				background: @day_color;
 				clip: rect(@clock_size/2, @clock_size, @clock_size, @clock_size/2);
 				transform: rotate(0deg); // -77.7292 = -1 * (360 - astro_val)
 				
 				.end_nautical {
 					// Position = Sunrise; Color = Astronomical Color
 					// Degrée: 0° = 0' ; 45° = 3h00' ; 90° = 06h00
-					background: #101149;
+					background: @astronomical_color;
 					clip: rect(0, @clock_size/2, @clock_size, 0);
 					//transform: rotate(-32.5583deg); // Astro end - Sunset end // -1 * ()
 					
 					.end_civil {
 						// Position = Nautical, Color = Sunrise
-						background: #ff7f5b;
+						background: @civil_color;
 						clip: rect(0, @clock_size, @clock_size, @clock_size/2);
 						//transform: rotate(24.7291deg); // NauticaEnd - Sunset End
 						
 						.end_sunset {
-							background: #ed4618;
+							background: @nautical_color;
 							clip: rect(0, @clock_size/2, @clock_size, 0);
 							//transform: rotate(-8.0375deg);  // -1 * (Natical - Civil)
 						}
@@ -195,13 +201,13 @@ body {
 					text-align: center;
 					transform-origin: center center;
 					
-					/** 00 **/&:nth-child(1) {transform: rotate(0deg);}
+					/** 00 **/&:nth-child(1) {transform: rotate(180deg);}
 					/** 02 **/&:nth-child(2) {transform: rotate(30deg);}
 					/** 04 **/&:nth-child(3) {transform: rotate(60deg);}
 					/** 06 **/&:nth-child(4) {transform: rotate(90deg);}
 					/** 08 **/&:nth-child(5) {transform: rotate(120deg);}
 					/** 10 **/&:nth-child(6) {transform: rotate(150deg);}
-					/** 12 **/&:nth-child(7) {transform: rotate(180deg);}
+					/** 12 **/&:nth-child(7) {transform: rotate(0deg);}
 					/** 02 **/&:nth-child(8) {transform: rotate(210deg);}
 					/** 04 **/&:nth-child(9) {transform: rotate(240deg);}
 					/** 06 **/&:nth-child(10) {transform: rotate(270deg);}
@@ -220,11 +226,12 @@ body {
 		}
 	}
 	
+	/** Indicateur de position actuel (non attaché) **/
 	.cursor {
 		// Version 1
 		position: absolute;
 		//border-top: 20px solid red; //8291c7
-		border-bottom: 10px solid #ff7f5b; //8291c7
+		border-bottom: 10px solid @cursor_color; //8291c7
 		border-left: 5px solid transparent;
 		border-right: 5px solid transparent;
 		width: 0;
@@ -242,7 +249,7 @@ body {
 			height: @clock_size / 2 / (2 * 1.5);
 			top: 4px;
 			left: -1px;
-			background: #ff7f5b;
+			background-color: @cursor_color;
 		}
 		
 		//position: absolute;
@@ -262,8 +269,9 @@ body {
 			border-color: #8291c7
 		}
 	}
-		
-	.inset {//display: none;
+	
+	/** Indicateurs de temps **/
+	.inset {
 		position: absolute;
 		border: 4px solid black;
 		left: calc(~"50% - 2px - " ((@clock_size / 1.5) / 2));
@@ -274,4 +282,33 @@ body {
 		border-radius: 50%;
 		color: white;
 	}
+	
+	/** Extension de configuration - Mode défini par JavaScript **/
+	// > Curseur de couleur différente
+	&.mode_{
+		// En mode Jour	
+		&day {
+			.cursor {
+				border-bottom: 10px solid @cursor_day_color;
+				&::after {background-color: @cursor_day_color;}
+			}
+		}
+		
+		// En mode Twilight (sunset/sunrise)
+		&twilight{
+			.cursor {
+				border-bottom: 10px solid @cursor_twilight_color;
+				&::after {background-color: @cursor_twilight_color;}
+			}
+		}
+		
+		// En mode Nuit
+		&night {
+			.cursor {
+				border-bottom: 10px solid @cursor_night_color;
+				&::after {background-color: @cursor_night_color;}
+			}
+		}
+	}
+	
 }
