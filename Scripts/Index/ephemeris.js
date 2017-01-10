@@ -64,14 +64,24 @@ function ephemeris(){
 	var self = this;
 	
 	self.watcher = null;
+	self.iClock = null;
+	self.previousMode = null;
+	
+	self.clock = function(){
+		/** Appliquer les calculs **/
+		document.querySelector(".ephemeris .clock").setAttribute("style", "transform: rotate("+(180-self.now())+"deg);");
+	};
 	
 	self.init = function(){
 		self.watcher = new SSE("watch-sunrise-sunset-api");
 		self.watcher.target("Processors/Async/watcher.php");
 		self.watcher.callback(self.update);
 		self.watcher.consoleOn();
-		self.watcher.setTimeoutDelay(30000);
+		//self.watcher.setTimeoutDelay(40000);
 		self.watcher.start();
+		
+		/** Séparation de l'horloge afin que celle-ci fonctionne même en mode off-line **/
+		self.iClock = setInterval(self.clock, 30000);
 	};
 	
 	self.update = function(stream){
@@ -81,7 +91,6 @@ function ephemeris(){
 			if(stream.status === "OK"){
 				stream = stream.results;
 				console.log(stream);
-				
 				
 				/*
 				day_length
@@ -108,6 +117,8 @@ function ephemeris(){
 				var civil_end = self.time_to_deg(stream.civil_twilight_end) + timezone_offset;
 				var nautical_end = self.time_to_deg(stream.nautical_twilight_end) + timezone_offset;
 				var astronomical_end = self.time_to_deg(stream.astronomical_twilight_end) + timezone_offset;
+				
+				console.log(astronomical_start, sunrise, self.now(), sunset, astronomical_end);
 				
 				
 				/** Effectuer les calculs **/
@@ -138,21 +149,10 @@ function ephemeris(){
 					
 					// Positionnement de la zone visible "Nautical_To_Civil"
 					var sunset_civil = -1 * (nautical_end - civil_end);
-					
-					
-					
-					// Maintenant() - 0° axe vertical, en haut, positif = rotaton sens horaire, 0° = 12h00 -> sens antihoraire
-					var now = new Date();
-					var isNoon = (now.getHours() > 12);
-					var hour = (now.getHours() > 12) ? (now.getHours() - 12) : now.getHours();
-					var now_str = hour+":"+now.getMinutes()+":"+now.getSeconds()+" "+((isNoon) ? ("PM") : ("AM"));
-					var clock_deg = self.time_to_deg(now_str);
-				
 				
 				
 				/** Appliquer les calculs **/
 				document.querySelector(".ephemeris .rings").classList.remove('uninitialized');
-				document.querySelector(".ephemeris .clock").setAttribute("style", "transform: rotate("+(180-clock_deg)+"deg);");
 				
 				document.querySelector(".ephemeris .rings .start_astronomical").setAttribute("style", "transform: rotate("+sunrise_astronomical+"deg);");
 				document.querySelector(".ephemeris .rings .start_nautical").setAttribute("style", "transform: rotate("+sunrise_sunrise+"deg);");
@@ -164,12 +164,56 @@ function ephemeris(){
 				document.querySelector(".ephemeris .rings .end_civil").setAttribute("style", "transform: rotate("+sunset_nautical+"deg);");
 				document.querySelector(".ephemeris .rings .end_sunset").setAttribute("style", "transform: rotate("+sunset_civil+"deg);");
 				
+				/** Gestion du cadran **/
+				// Déterminer le mode qui convient 
+				var mode = null;
+				
+				// Correspond au du mode JOUR
+				if(self.now() > sunrise && self.now() < sunset){
+					mode = "mode_day";
+				}
+				
+				// Correspond au du mode TWILIGHT
+				else if (
+					(self.now() > astronomical_start && self.now() <= sunrise) // Le twilight du matin
+					||
+					(self.now() >= sunset && self.now() < astronomical_end) // Le twilight du soir
+				) {
+					mode = "mode_twilight";
+				}
+				// Correspond au du mode NUIT
+				else if (self.now() >= astronomical_end) {
+					mode = "mode_night";
+				}
+					
+				// Erreur
+				else {
+					console.error("erreur mode");
+				}
+				
+				if(self.previousMode !== mode){
+					document.querySelector(".ephemeris").classList.remove(self.previousMode);
+					document.querySelector(".ephemeris").classList.add(mode);
+					self.previousMode = mode;
+				}
+				
 			} else {
 				console.error("Sunset/Sunrise API Respond with Not OK Status", stream);
 			}
 		} catch (err){
 			console.log(err, stream.data);
 		}
+	};
+	
+	self.now = function(){
+		// Maintenant() - 0° axe vertical, en haut, positif = rotaton sens horaire, 0° = 12h00 -> sens antihoraire
+		var now = new Date();
+		var isNoon = (now.getHours() > 12);
+		var hour = (now.getHours() > 12) ? (now.getHours() - 12) : now.getHours();
+		var now_str = hour+":"+now.getMinutes()+":"+now.getSeconds()+" "+((isNoon) ? ("PM") : ("AM"));
+		var clock_deg = self.time_to_deg(now_str);
+		
+		return clock_deg;
 	};
 	
 	self.time_to_deg = function(time){
@@ -191,5 +235,14 @@ function ephemeris(){
 	};
 }
 
-var EPHEMERIS = new ephemeris();
-	EPHEMERIS.init();
+
+	
+
+/** Déclencher la premiere occurence de la méthode clock() lorsque le document est bien chargé **/
+document.addEventListener("readystatechange", function(){
+	if(document.readyState === "complete"){
+		var EPHEMERIS = new ephemeris();
+			EPHEMERIS.clock();
+			EPHEMERIS.init();
+	}
+});
