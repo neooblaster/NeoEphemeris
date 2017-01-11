@@ -100,6 +100,9 @@ sudo apt-get install php5-fpm php5-json php5-memcache php5-memcached php5-mysql 
 ## 6. Clone Repository with Git
 
 
+# How To Configure NeoEphemeris
+
+
 # How To Contribute 
 
 ## 1. Powered By 
@@ -107,13 +110,13 @@ sudo apt-get install php5-fpm php5-json php5-memcache php5-memcached php5-mysql 
 ### 1.1. Template Engine developted by myself based from PHPLIB HowTo
 
 * Sources : http://phpcodeur.net/articles/php/templates#h-variables
-* Repository : Comming Soon
+* Repository : https://github.com/neooblaster/Template
 * Manual : Comming Soon
 
 ### 1.2. Language Engine developted by myself to complet Template Engine but fully standalone
 
 * Sources : None
-* Repository : Comming Soon
+* Repository : https://github.com/neooblaster/SYSLang
 * Manual : Comming Soon
 
 ### 1.3. AJAX Engine developted by myself to simplify "XMLHttpRequest" implementation
