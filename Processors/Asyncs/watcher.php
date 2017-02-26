@@ -48,10 +48,9 @@
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** > Chargement des Paramètres **/
-	json_to(file_get_contents("../../Configs/config.application.params.json"));
+	require_once "../../Setups/setup.params.php";
 
 /** > Ouverture des SESSIONS Globales **/
-
 /** > Chargement des Classes **/
 
 /** > Chargement des Configs **/
@@ -98,7 +97,7 @@
 	$ch = curl_init();
 
 /** Composition des URLs **/
-	$sun = SOURCES_SUN_URL."?lat=48.592832&lng=-4.423762";
+	$sun = SOURCES_SUN_URL."?lat=".GEO_LAT_DD."&lng=".GEO_LNG_DD;
 
 /** Configuration du moteur CURL **/
 	curl_setopt($ch, CURLOPT_URL, $sun);
