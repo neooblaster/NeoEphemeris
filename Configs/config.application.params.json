@@ -30,9 +30,46 @@
 /** ---		--------------------------------------------																						--- **/
 /** ---																																						--- **/
 /** ---																																						--- **/
+/** ---																																						--- **/
+/** ---																																						--- **/
+/** ---		>  C'est le fichier de configuration par défault de l'application. Tout paramètre customisé par					--- **/
+/** ---		l'utilisateur via l'application se trouverons enregistré dans le fichier :												--- **/
+/** ---																																						--- **/
+/** ---			config.application.params.custom.json																							--- **/
+/** ---																																						--- **/
+/** ---																																						--- **/
+/** ---																																						--- **/
+/** ---		Paris :																																		--- **/
+/** ---			Latitude DD : 48.856767																												--- **/
+/** ---			Latitude DMS : N:48:51:24.4																										--- **/
+/** ---																																						--- **/
+/** ---			Longitude DMS :2.351640																												--- **/
+/** ---			Longitude DMS : E:2:21:05.9																										--- **/
+/** ---																																						--- **/
 /** ----------------------------------------------------------------------------------------------------------------------- **/
 /** ----------------------------------------------------------------------------------------------------------------------- **/
 {
+	/** Paramètres de Geolocalisation **/
+	"GEO": {
+		/** Paramètres en Degrée Décilaux (DD) **/
+		/** Paramètres en Degrée Minute Seconde (DMS) **/
+		"LAT": {
+			/**"DD": 48.592832,**/
+			"DD": 48.856767,
+			"DMS": "0:0:0"
+		},
+		"LNG": {
+			/**"DD": -4.423762,**/
+			"DD": 2.351640,
+			"DMS": "0:0:0"
+		},
+		"EARTH": {
+			/** Valeur exact : 23.44 **/
+			/** Entre de 22.1 et 24.5 sur un cycle de 41000 ans**/
+			"TILT": 23.5
+		}
+	},
+	
 	/** Adresses des différentes sources **/
 	"SOURCES": {
 		/** Sunrise / sunset API **/
