@@ -70,5 +70,22 @@
 				</div>
 			</div>
 		</div>
+		
+		
+		<pre id="console">
+			
+		</pre>
+		
+		<script type="text/javascript">
+			
+			setInterval(function(){
+				new xhrQuery().target("Processors/Asyncs/solar.php").callbacks(function(e){
+					document.querySelector("#console").innerHTML = e;
+				}).send();
+			},1000);
+			
+		</script>
+		
+		
 	</body>
 </html>

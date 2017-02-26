@@ -74,7 +74,7 @@ function ephemeris(){
 	
 	self.init = function(){
 		self.watcher = new SSE("watch-sunrise-sunset-api");
-		self.watcher.target("Processors/Async/watcher.php");
+		self.watcher.target("Processors/Asyncs/watcher.php");
 		self.watcher.callback(self.update);
 		self.watcher.consoleOn();
 		//self.watcher.setTimeoutDelay(40000);
