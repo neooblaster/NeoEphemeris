@@ -34,6 +34,15 @@
 	
 		Programme de traitement des fichiers de configuration spécifié.
 		Conversion de fichiers JSON en constante PHP ou variable globale.
+		
+		Quelque soit l'endroit où le script est appelé, __DIR__ donnera l'emplacement de ce script.
+		Ainsi les fichier de configs se trouverons toujours à "dossier parent, dossier Configs" de lui, soit
+		
+			__DIR__/../Configs/
+			
+			
+		Si on utilise les constantes, le fichier de config custom est à charger en premier. L'écrasement des paramètres est impossible
+		Si on utilise les variables, le fichier de confif custom est à charger en dernier. L'écrasement doit être les paramètre customs
 	
 	
 	Description fonctionnelle :
@@ -75,8 +84,12 @@
 /** ---																																					--- **
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **/
+// 1. Charger les paramètre personnalisé
+json_to(file_get_contents(__DIR__."/../Configs/config.application.params.customs.json"));
 
-
+// 2. Charger les paramètre par défaut et globaux
+json_to(file_get_contents(__DIR__."/../Configs/config.application.params.json"));
+json_to(file_get_contents(__DIR__."/../Configs/config.application.credentials.json"));
 
 /** -------------------------------------------------------------------------------------------------------------------- **
 /** -------------------------------------------------------------------------------------------------------------------- **
